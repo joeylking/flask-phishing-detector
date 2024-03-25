@@ -10,6 +10,9 @@ numpy = "*"
 scikit-learn = "*"
 pandas = "*"
 joblib = "*"
+readability = "*"
+beautifulsoup4 = "*"
+spellchecker = "*"
 
 [dev-packages]
 

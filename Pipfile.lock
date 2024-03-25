@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "89cf26fc1c8ce3f010876f98d1e1738408838cbc55105341cf49e9c974f1c1a3"
+            "sha256": "6b1c07c1793390fb1649f464a47e844a43bc7797b7634e8c4ffb41c3ddc75412"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -24,6 +24,15 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==0.6.0"
+        },
+        "beautifulsoup4": {
+            "hashes": [
+                "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051",
+                "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed"
+            ],
+            "index": "pypi",
+            "markers": "python_full_version >= '3.6.0'",
+            "version": "==4.12.3"
         },
         "blinker": {
             "hashes": [
@@ -270,6 +279,12 @@
             ],
             "markers": "python_version < '3.10'",
             "version": "==7.1.0"
+        },
+        "inexactsearch": {
+            "hashes": [
+                "sha256:b7df09c46e1ea73996449ceb4df265483e4dc6b61dac2ea4df6f2e5ad8d53b75"
+            ],
+            "version": "==1.0.2"
         },
         "itsdangerous": {
             "hashes": [
@@ -643,6 +658,13 @@
             ],
             "version": "==2024.1"
         },
+        "readability": {
+            "hashes": [
+                "sha256:f9030df8bc31aad45baffa9a2d9ce1fdd8051833e5b5bda3027df32fdec00fad"
+            ],
+            "index": "pypi",
+            "version": "==0.3.1"
+        },
         "requests": {
             "hashes": [
                 "sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f",
@@ -718,6 +740,12 @@
             "markers": "python_version >= '3.8'",
             "version": "==69.2.0"
         },
+        "silpa-common": {
+            "hashes": [
+                "sha256:d4a4366193fd606fdcbf6d6e996a57a8bed9ff54ec8e2f798d2b7bc885dde3fd"
+            ],
+            "version": "==0.3"
+        },
         "six": {
             "hashes": [
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
@@ -733,6 +761,20 @@
             ],
             "markers": "python_version >= '3.6' and python_version < '4.0'",
             "version": "==6.4.0"
+        },
+        "soundex": {
+            "hashes": [
+                "sha256:f837692afab3dc4f0132a36d8e8a8384f6ac8349fffdf5103291c3d1c2d48ad3"
+            ],
+            "version": "==1.1.3"
+        },
+        "soupsieve": {
+            "hashes": [
+                "sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690",
+                "sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==2.5"
         },
         "spacy": {
             "hashes": [
@@ -786,6 +828,13 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==1.0.5"
+        },
+        "spellchecker": {
+            "hashes": [
+                "sha256:7ebe5480641d2fa555e4a9d0592e6f6866d095c37c5563e38a349f8ce26358c7"
+            ],
+            "index": "pypi",
+            "version": "==0.4"
         },
         "srsly": {
             "hashes": [
