@@ -4,13 +4,13 @@ import re
 from email.message import EmailMessage
 from email.utils import getaddresses
 
-import SpellChecker as SpellChecker
 import readability as readability
 import spacy
 from bs4 import BeautifulSoup
 from spacy.matcher import Matcher
+from spellchecker import SpellChecker
 
-import matcher_patterns
+from . import matcher_patterns
 
 
 class FeatureExtractor:
@@ -234,3 +234,7 @@ class FeatureExtractor:
                     attachments_count += 1
 
         return attachments_count > 0, attachments_count
+
+    def extract_features_with_logging(self, index, dataset, email):
+        print(f"Extracting features from email #{index + 1} of {dataset} dataset")
+        return self.extract(email)

@@ -1,11 +1,13 @@
+import logging
 import pickle
 import time
 
+from flask import session
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-class ModelManager:
-    def __init__(self):
 
+class ModelManager:
+    # def __init__(self):
 
     def train_and_evaluate(self, model, name, train_vectors, train_labels, test_vectors, test_labels):
         training_start_time = time.time()
@@ -25,7 +27,17 @@ class ModelManager:
         training_end_time = time.time()
         print(f"Training time: {training_end_time - training_start_time}")
 
-        print(f"Evaluating {name}...")
+        self.evaluate_model(model, name, predicted_labels, test_labels)
+
+        # Save the trained model
+        model_filename = f"app/ml_models/{name.replace(' ', '_')}_model.pkl"
+        with open(model_filename, 'wb') as file:
+            pickle.dump(model, file)
+        logging.info(f"Saved {name} model to {model_filename}")
+
+    def evaluate_model(self, model, name, predicted_labels, test_labels):
+        logging.info("Evaluating %s", name)
+
         accuracy = accuracy_score(test_labels, predicted_labels)
         precision = precision_score(test_labels, predicted_labels)
         recall = recall_score(test_labels, predicted_labels)
@@ -35,9 +47,3 @@ class ModelManager:
         print(f"{name} precision: {precision:.3f}")
         print(f"{name} recall: {recall:.3f}")
         print(f"{name} F1 score: {f1:.3f}")
-
-        # Save the trained model
-        model_filename = f"{name.replace(' ', '_')}_model.pkl"
-        with open(model_filename, 'wb') as file:
-            pickle.dump(model, file)
-        print(f"Saved {name} model to {model_filename}")

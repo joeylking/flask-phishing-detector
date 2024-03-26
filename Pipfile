@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 flask = "*"
 spacy = "*"
+en-core-web-md = {file = "https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.7.1/en_core_web_md-3.7.1.tar.gz"}
 numpy = "*"
 scikit-learn = "*"
 pandas = "*"
@@ -13,6 +14,8 @@ joblib = "*"
 readability = "*"
 beautifulsoup4 = "*"
 spellchecker = "*"
+seaborn = "*"
+matplotlib = "*"
 
 [dev-packages]
 
