@@ -2,12 +2,26 @@ import logging
 import pickle
 import time
 
-from flask import session
+from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 
 class ModelManager:
-    # def __init__(self):
+
+    @staticmethod
+    def load_model():
+        model_path = 'app/ml_models/Random_Forest_model.pkl'
+        with open(model_path, 'rb') as f:
+            model = pickle.load(f)
+        return model
+
+    @staticmethod
+    def train_and_save_vectorizer(data, vectorizer_file_path):
+        vectorizer = DictVectorizer(sparse=True)
+        feature_vectors = vectorizer.fit_transform(data)
+        with open(vectorizer_file_path, 'wb') as f:
+            pickle.dump(vectorizer, f)
+        return vectorizer
 
     def train_and_evaluate(self, model, name, train_vectors, train_labels, test_vectors, test_labels):
         training_start_time = time.time()

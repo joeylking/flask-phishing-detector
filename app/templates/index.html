@@ -26,25 +26,22 @@
 
     <div class="container mt-5">
         <h1 class="text-center">Welcome to the Phishing Email Detector</h1>
-        <div class="mt-5">
-            <h3>Paste your email text:</h3>
-            <form action="/analyze" method="post">
-                <div class="form-group">
-                    <textarea class="form-control" name="email_text" rows="10"></textarea>
-                </div>
-                <button type="submit" class="btn btn-success">Analyze</button>
-            </form>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <h3>Paste your email text or upload a file:</h3>
+                <textarea class="form-control" name="email_text" rows="10" placeholder="Paste your email here"></textarea>
+                <small class="form-text text-muted">Or upload an email file:</small>
+                <input type="file" class="form-control-file" name="email_file">
+                <small class="form-text text-muted">Accepted formats: .txt, .eml, .mbox</small>
+            </div>
+            <button type="submit" class="btn btn-success">Analyze</button>
+        </form>
+        {% if result %}
+        <div class="alert alert-info mt-3" role="alert">
+            <strong>Prediction:</strong> {{ result }}<br>
+            <strong>Confidence:</strong> {{ confidence|round(2) }}%
         </div>
-        <div class="mt-5">
-            <h3>Or upload an email file:</h3>
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input type="file" class="form-control-file" name="email_file">
-                    <small class="form-text text-muted">Accepted formats: .txt, .eml, .mbox</small>
-                </div>
-                <button type="submit" class="btn btn-success">Upload and Analyze</button>
-            </form>
-        </div>
+        {% endif %}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

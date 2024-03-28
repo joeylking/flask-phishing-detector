@@ -16,6 +16,7 @@ beautifulsoup4 = "*"
 spellchecker = "*"
 seaborn = "*"
 matplotlib = "*"
+plotly = "*"
 
 [dev-packages]
 

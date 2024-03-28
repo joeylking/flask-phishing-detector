@@ -12,11 +12,8 @@ from sklearn.pipeline import make_pipeline
 from app.features.feature_extractor import FeatureExtractor
 from app.ml_models.model_manager import ModelManager
 from app.routes import *
-from app.routes.data_loading import data_loading_blueprint
-from app.routes.eda import eda_blueprint
-from app.routes.home import home_blueprint
-from app.routes.prediction import prediction_blueprint
-from app.util.email_loading_utils import load_enron_dataset, load_nazario_phishing_dataset
+from app.routes.views import home_blueprint
+from app.util.email_loading import load_enron_dataset, load_nazario_phishing_dataset
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -28,10 +25,22 @@ def create_app():
     # Initial setup
     initialize_app()
 
+    # Load the trained model and vectorizer
+    with open('app/ml_models/Random_Forest_model.pkl', 'rb') as model_file, \
+            open('app/ml_models/vectorizer.pkl', 'rb') as vectorizer_file, \
+            open('app/ml_models/train_vectors.pkl', 'rb') as train_vector_file, \
+            open('app/ml_models/train_labels.pkl', 'rb') as train_labels_file:
+        model = pickle.load(model_file)
+        vectorizer = pickle.load(vectorizer_file)
+        train_vector = pickle.load(train_vector_file)
+        train_labels = pickle.load(train_labels_file)
+
+    app.config['MODEL'] = model
+    app.config['VECTORIZER'] = vectorizer
+    app.config['TRAIN_VECTOR'] = train_vector
+    app.config['TRAIN_LABELS'] = train_labels
+
     app.register_blueprint(home_blueprint)
-    app.register_blueprint(eda_blueprint, url_prefix='/eda')
-    app.register_blueprint(prediction_blueprint, url_prefix='/predict')
-    app.register_blueprint(data_loading_blueprint, url_prefix='/data')
 
     return app
 
@@ -44,6 +53,7 @@ def initialize_app():
     train_labels_file = 'app/ml_models/train_labels.pkl'
     test_vectors_file = 'app/ml_models/test_vectors.pkl'
     test_labels_file = 'app/ml_models/test_labels.pkl'
+    vectorizer_file = 'app/ml_models/vectorizer.pkl'
 
     # Check for existing data files and load them if they exist
     if os.path.exists(train_vectors_file) and os.path.exists(train_labels_file) and \
@@ -63,8 +73,8 @@ def initialize_app():
         logging.info("Preprocessed data not found, loading and processing raw datasets...")
 
         # Load emails
-        enron_emails = load_enron_dataset('app/data/enron-data/maildir', ['inbox'])
-        nazario_emails = load_nazario_phishing_dataset('app/data/phishing-data/')
+        enron_emails = load_enron_dataset('data/enron-data/maildir', ['inbox'])
+        nazario_emails = load_nazario_phishing_dataset('data/phishing-data/')
         print("All emails loaded")
 
         # Apply labels
@@ -95,9 +105,19 @@ def initialize_app():
 
         # Convert the list of feature dicts to a feature matrix
         logging.info("Begin vectorization...")
-        vectorizer = DictVectorizer(sparse=True)
-        train_vectors = vectorizer.fit_transform(train_features)
-        test_vectors = vectorizer.transform(test_features)
+        if os.path.exists(vectorizer_file):
+            logging.info("Loading existing vectorizer...")
+            with open(vectorizer_file, 'rb') as f:
+                vectorizer = pickle.load(f)
+                train_vectors = vectorizer.fit_transform(train_features)
+                test_vectors = vectorizer.transform(test_features)
+        else:
+            logging.info("Training new vectorizer...")
+            vectorizer = DictVectorizer(sparse=True)
+            train_vectors = vectorizer.fit_transform(train_features)
+            test_vectors = vectorizer.transform(test_features)
+            with open(vectorizer_file, 'wb') as f:
+                pickle.dump(vectorizer, f)
 
         # Save vectors and labels
         logging.info("Saving vectors and labels...")
@@ -113,7 +133,6 @@ def initialize_app():
         logging.info("Data processing complete.")
 
     # Model training and loading
-    # Define file path
     rf_model_file = 'app/ml_models/Random_Forest_model.pkl'
     manager = ModelManager()
     if os.path.exists(rf_model_file):
@@ -127,7 +146,5 @@ def initialize_app():
         manager.train_and_evaluate(make_pipeline(SimpleImputer(strategy="mean"),
                                                  RandomForestClassifier(n_estimators=100)),
                                    'Random Forest', train_vectors, train_labels, test_vectors, test_labels)
-
-
 
     logging.info("Model setup complete.")
